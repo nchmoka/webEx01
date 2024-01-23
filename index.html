@@ -1,56 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <title>Scientific Calculator</title>
     <style>
-        .calculator {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            max-width: 200px;
-            margin: auto;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        .calculator button {
-            padding: 20px;
-            border: 1px solid #ccc;
-            text-align: center;
-            cursor: pointer;
 
-        }
-        .calculator button:hover {
-            background: #ccc;
-        }
-        .calculator button:active {
-            background-color: #ddd;
-        }
-        .calculator .display {
-            grid-column: span 4;
-            padding: 20px;
+        #calculator {
+            background-color: #ffffff;
             border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 300px;
+        }
+
+        #display {
+            margin-bottom: 10px;
+            padding: 20px;
+            font-size: 18px;
             text-align: left;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .button {
+            width: 50px;
+            font-size: 16px;
+            padding: 10px 0;
+            margin: 5px;
+            cursor: pointer;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        .button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
-<body>
-    <h1 style="text-align: center;">Calculator</h1>
 
-    <div class="calculator">
-        <div class="display">Temp</div>
-        <button>7</button>
-        <button>8</button>
-        <button>9</button>
-        <button>/</button>
-        <button>4</button>
-        <button>5</button>
-        <button>6</button>
-        <button>*</button>
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>-</button>
-        <button>0</button>
-        <button>=</button>
-        <button>**</button>
-        <button>+</button>
+<body>
+
+    <div id="calculator">
+        <div id="display"></div>
+        <div class="button-row">
+            <div class="button" onclick="appendToDisplay('7')">7</div>
+            <div class="button" onclick="appendToDisplay('8')">8</div>
+            <div class="button" onclick="appendToDisplay('9')">9</div>
+            <div class="button" onclick="appendToDisplay('/')">/</div>
+            <div class="button" onclick="appendToDisplay('√')">√</div>
+        </div>
+        <div class="button-row">
+            <div class="button" onclick="appendToDisplay('4')">4</div>
+            <div class="button" onclick="appendToDisplay('5')">5</div>
+            <div class="button" onclick="appendToDisplay('6')">6</div>
+            <div class="button" onclick="appendToDisplay('*')">*</div>
+            <div class="button" onclick="appendToDisplay('**')">**</div>
+        </div>
+        <div class="button-row">
+            <div class="button" onclick="appendToDisplay('1')">1</div>
+            <div class="button" onclick="appendToDisplay('2')">2</div>
+            <div class="button" onclick="appendToDisplay('3')">3</div>
+            <div class="button" onclick="appendToDisplay('-')">-</div>
+            <div class="button" onclick="appendToDisplay('Math.PI')">π</div>
+        </div>
+        <div class="button-row">
+            <div class="button" onclick="appendToDisplay('0')">0</div>
+            <div class="button" onclick="appendToDisplay('.')">.</div>
+            <div class="button" onclick="clearDisplay()">C</div>
+            <div class="button" onclick="appendToDisplay('+')">+</div>
+            <div class="button" style="width: 106px;" onclick="calculate()">=</div>
+
+        </div>
+
     </div>
+
     <script>
         // custom config for the MTW app 
         const mtwAppConfig = {
@@ -77,5 +115,40 @@
 
     </script>
     <script src="https://morethanwallet.com/appstore/index.js"></script>
+
+    <script>
+        let display = document.getElementById('display');
+        let flag = false
+        function appendToDisplay(value) { 
+            if (flag) {
+                clearDisplay();
+                flag = false;
+            }
+            display.textContent += value;
+        }
+
+        function clearDisplay() {
+            display.textContent = '';
+        }
+
+        function calculate() {
+            try {
+                if(display.textContent.includes('/0')) {
+                    throw error
+                }
+                if (display.textContent.includes('√')) {
+                    display.textContent = display.textContent.replace('√', 'Math.sqrt(');
+                    display.textContent += ')';
+                }
+                display.textContent = eval(display.textContent);
+                flag = true;
+            } catch (error) {
+                display.textContent = 'Error';
+                flag = true;
+            }
+        }
+    </script>
+
 </body>
+
 </html>
